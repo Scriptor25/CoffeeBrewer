@@ -87,6 +87,10 @@ namespace cb::fe
 
         ExpressionPtr NextExpression();
 
+        ConstExpressionPtr NextConstExpression();
+
+        FullExpressionPtr NextFullExpression();
+
         LabelPtr NextLabel();
 
         TypePtr NextType();

@@ -121,7 +121,12 @@ bool cb::fe::Parser::At(const std::string &value) const { return m_Token.Value =
 
 bool cb::fe::Parser::At(TokenType type) const { return m_Token.Type == type; }
 
-bool cb::fe::Parser::NextIfAt(const std::string &value) { if (At(value)) Next(); }
+bool cb::fe::Parser::NextIfAt(const std::string &value)
+{
+    const auto at = At(value);
+    if (at) Next();
+    return at;
+}
 
 void cb::fe::Parser::Expect(const std::string &value)
 {

@@ -68,6 +68,14 @@ namespace cb::fe
 
     struct RegisterStatement : Statement
     {
+        static RegisterStatementPtr Get(const std::string &name, ExpressionPtr initializer)
+        {
+            return std::make_shared<RegisterStatement>(name, initializer);
+        }
+
+        RegisterStatement(const std::string &name, ExpressionPtr initializer)
+            : Name(name), Initializer(initializer) {}
+
         std::string Name;
         ExpressionPtr Initializer;
     };

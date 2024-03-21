@@ -17,6 +17,12 @@ namespace cb::fe
     struct Arg;
 
     struct Expression;
+    struct ConstExpression;
+    struct IntExpression;
+    struct FloatExpression;
+    struct CharExpression;
+    struct StringExpression;
+    struct FullExpression;
 
     enum ExpressionType
     {
@@ -47,6 +53,12 @@ namespace cb::fe
     typedef std::shared_ptr<Arg> ArgPtr;
 
     typedef std::shared_ptr<Expression> ExpressionPtr;
+    typedef std::shared_ptr<ConstExpression> ConstExpressionPtr;
+    typedef std::shared_ptr<IntExpression> IntExpressionPtr;
+    typedef std::shared_ptr<FloatExpression> FloatExpressionPtr;
+    typedef std::shared_ptr<CharExpression> CharExpressionPtr;
+    typedef std::shared_ptr<StringExpression> StringExpressionPtr;
+    typedef std::shared_ptr<FullExpression> FullExpressionPtr;
 
     typedef std::shared_ptr<Label> LabelPtr;
 
@@ -54,4 +66,14 @@ namespace cb::fe
     typedef std::shared_ptr<PointerType> PointerTypePtr;
     typedef std::shared_ptr<ArrayType> ArrayTypePtr;
     typedef std::shared_ptr<FunctionType> FunctionTypePtr;
+
+    std::ostream &operator<<(std::ostream &out, const StatementPtr &sptr);
+
+    std::ostream &operator<<(std::ostream &out, const SymbolStatement &s);
+
+    std::ostream &operator<<(std::ostream &out, const FunctionDeclaration &s);
+
+    std::ostream &operator<<(std::ostream &out, const ExpressionPtr &eptr);
+
+    std::ostream &operator<<(std::ostream &out, const IntExpression &e);
 }

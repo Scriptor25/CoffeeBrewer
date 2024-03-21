@@ -10,10 +10,11 @@ cb::fe::TypePtr cb::fe::Parser::NextType()
 
 cb::fe::TypePtr cb::fe::Parser::NextType(TypePtr base)
 {
-    if (At("*")) return NextType(PointerType::Get(base));
-    if (At("["))
+    if (NextIfAt("*")) return NextType(PointerType::Get(base));
+    if (NextIfAt("["))
     {
         auto size = Expect(TokenType_Integer).Value;
+        Expect("]");
         return NextType(ArrayType::Get(base, std::stoull(size)));
     }
     return base;
