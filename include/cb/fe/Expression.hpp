@@ -1,79 +1,54 @@
 #pragma once
 
 #include <cb/Frontend.hpp>
-#include <cb/fe/Statement.hpp>
 
+#include <string>
 #include <vector>
 
 namespace cb::fe
 {
-    struct Expression : Statement
-    {
-        Expression(ExpressionType type)
-            : ExprType(type) {}
+	struct Expression
+	{
+		Expression(TypePtr type);
+		~Expression() = default;
 
-        ExpressionType ExprType;
-    };
+		TypePtr Type;
+	};
 
-    struct ConstExpression : Expression
-    {
-        ConstExpression(TypePtr type)
-            : Expression(ExpressionType_Const), Type(type) {}
+	struct RegisterExpression : Expression
+	{
+		static RegisterExpressionPtr Create(TypePtr type, const std::string& name);
 
-        TypePtr Type;
-    };
+		RegisterExpression(TypePtr type, const std::string& name);
 
-    struct IntExpression : ConstExpression
-    {
-        static IntExpressionPtr Get(TypePtr type, int value) { return std::make_shared<IntExpression>(type, value); }
+		std::string Name;
+	};
 
-        IntExpression(TypePtr type, int value)
-            : ConstExpression(type), Value(value) {}
+	struct SymbolExpression : Expression
+	{
+		static SymbolExpressionPtr Create(TypePtr type, const std::string& name);
 
-        int Value;
-    };
+		SymbolExpression(TypePtr type, const std::string& name);
 
-    struct FloatExpression : ConstExpression
-    {
-        static FloatExpressionPtr Get(TypePtr type, float value)
-        {
-            return std::make_shared<FloatExpression>(type, value);
-        }
+		std::string Name;
+	};
 
-        FloatExpression(TypePtr type, float value)
-            : ConstExpression(type), Value(value) {}
+	struct ConstExpression : Expression
+	{
+		static ConstExpressionPtr Create(TypePtr type, const std::string& value);
 
-        float Value;
-    };
+		ConstExpression(TypePtr type, const std::string& value);
 
-    struct CharExpression : ConstExpression
-    {
-        static CharExpressionPtr Get(TypePtr type, char value) { return std::make_shared<CharExpression>(type, value); }
+		std::string Value;
+	};
 
-        CharExpression(TypePtr type, char value)
-            : ConstExpression(type), Value(value) {}
+	struct OperationExpression : Expression
+	{
+		static OperationExpressionPtr Create(TypePtr type, const std::string& operation, const std::vector<ExpressionPtr>& args);
 
-        char Value;
-    };
+		OperationExpression(TypePtr type, const std::string& operation, const std::vector<ExpressionPtr>& args);
 
-    struct StringExpression : ConstExpression
-    {
-        static StringExpressionPtr Get(TypePtr type, const std::string &value)
-        {
-            return std::make_shared<StringExpression>(type, value);
-        }
-
-        StringExpression(TypePtr type, const std::string &value)
-            : ConstExpression(type), Value(value) {}
-
-        std::string Value;
-    };
-
-    struct FullExpression : Expression
-    {
-        FullExpression(ExpressionType type, const std::vector<ExpressionPtr> &args)
-            : Expression(type), Args(args) {}
-
-        std::vector<ExpressionPtr> Args;
-    };
+		std::string Operation;
+		std::vector<ExpressionPtr> Args;
+	};
 }

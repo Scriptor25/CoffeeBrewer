@@ -4,76 +4,73 @@
 
 namespace cb::fe
 {
-    class Parser;
+	class Parser;
 
-    struct Statement;
-    struct FunctionDeclaration;
-    struct FunctionDefinition;
-    struct ReturnStatement;
-    struct BreakStatement;
-    struct SymbolStatement;
-    struct RegisterStatement;
+	enum TokenType
+	{
+		TokenType_ = 0b0000000,
 
-    struct Arg;
+		TokenType_EOF = 0b0000001,
+		TokenType_Identifier = 0b0000010,
+		TokenType_Integer = 0b0000100,
+		TokenType_Float = 0b0001000,
+		TokenType_String = 0b0010000,
+		TokenType_Char = 0b0100000,
+		TokenType_Other = 0b1000000,
+	};
+	std::ostream& operator<<(std::ostream& out, const TokenType& type);
 
-    struct Expression;
-    struct ConstExpression;
-    struct IntExpression;
-    struct FloatExpression;
-    struct CharExpression;
-    struct StringExpression;
-    struct FullExpression;
+	struct Token;
+	std::ostream& operator<<(std::ostream& out, const Token& token);
 
-    enum ExpressionType
-    {
-        ExpressionType_,
-        ExpressionType_Call,
-        ExpressionType_Const,
-        ExpressionType_ICmpEQ,
-        ExpressionType_ICmpLE,
-        ExpressionType_ISub,
-        ExpressionType_IAdd,
-    };
+	struct Symbol;
+	typedef std::shared_ptr<Symbol> SymbolPtr;
 
-    struct Label;
+	struct GlobalVariable;
+	typedef std::shared_ptr<GlobalVariable> GlobalVariablePtr;
 
-    struct Type;
-    struct PointerType;
-    struct ArrayType;
-    struct FunctionType;
+	struct Function;
+	typedef std::shared_ptr<Function> FunctionPtr;
 
-    typedef std::shared_ptr<Statement> StatementPtr;
-    typedef std::shared_ptr<FunctionDeclaration> FunctionDeclarationPtr;
-    typedef std::shared_ptr<FunctionDefinition> FunctionDefinitionPtr;
-    typedef std::shared_ptr<ReturnStatement> ReturnStatementPtr;
-    typedef std::shared_ptr<BreakStatement> BreakStatementPtr;
-    typedef std::shared_ptr<SymbolStatement> SymbolStatementPtr;
-    typedef std::shared_ptr<RegisterStatement> RegisterStatementPtr;
+	struct Arg;
+	typedef std::shared_ptr<Arg> ArgPtr;
 
-    typedef std::shared_ptr<Arg> ArgPtr;
+	struct Type;
+	typedef std::shared_ptr<Type> TypePtr;
 
-    typedef std::shared_ptr<Expression> ExpressionPtr;
-    typedef std::shared_ptr<ConstExpression> ConstExpressionPtr;
-    typedef std::shared_ptr<IntExpression> IntExpressionPtr;
-    typedef std::shared_ptr<FloatExpression> FloatExpressionPtr;
-    typedef std::shared_ptr<CharExpression> CharExpressionPtr;
-    typedef std::shared_ptr<StringExpression> StringExpressionPtr;
-    typedef std::shared_ptr<FullExpression> FullExpressionPtr;
+	struct PointerType;
+	typedef std::shared_ptr<PointerType> PointerTypePtr;
 
-    typedef std::shared_ptr<Label> LabelPtr;
+	struct ArrayType;
+	typedef std::shared_ptr<ArrayType> ArrayTypePtr;
 
-    typedef std::shared_ptr<Type> TypePtr;
-    typedef std::shared_ptr<PointerType> PointerTypePtr;
-    typedef std::shared_ptr<ArrayType> ArrayTypePtr;
-    typedef std::shared_ptr<FunctionType> FunctionTypePtr;
+	struct FunctionType;
+	typedef std::shared_ptr<FunctionType> FunctionTypePtr;
 
-    std::ostream &operator<<(std::ostream &out, const StatementPtr &sptr);
+	struct Statement;
+	typedef std::shared_ptr<Statement> StatementPtr;
 
-    std::ostream &operator<<(std::ostream &out, const SymbolStatement &s);
+	struct RegisterStatement;
+	typedef std::shared_ptr<RegisterStatement> RegisterStatementPtr;
 
-    std::ostream &operator<<(std::ostream &out, const FunctionDeclaration &s);
+	struct ReturnStatement;
+	typedef std::shared_ptr<ReturnStatement> ReturnStatementPtr;
 
-    std::ostream &operator<<(std::ostream &out, const ExpressionPtr &eptr);
+	struct BranchStatement;
+	typedef std::shared_ptr<BranchStatement> BranchStatementPtr;
 
-    std::ostream &operator<<(std::ostream &out, const IntExpression &e);
+	struct Expression;
+	typedef std::shared_ptr<Expression> ExpressionPtr;
+
+	struct RegisterExpression;
+	typedef std::shared_ptr<RegisterExpression> RegisterExpressionPtr;
+
+	struct SymbolExpression;
+	typedef std::shared_ptr<SymbolExpression> SymbolExpressionPtr;
+
+	struct ConstExpression;
+	typedef std::shared_ptr<ConstExpression> ConstExpressionPtr;
+
+	struct OperationExpression;
+	typedef std::shared_ptr<OperationExpression> OperationExpressionPtr;
 }

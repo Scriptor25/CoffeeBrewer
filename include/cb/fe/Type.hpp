@@ -7,66 +7,43 @@
 
 namespace cb::fe
 {
-    struct Type
-    {
-        static TypePtr Get(const std::string &name) { return std::make_shared<Type>(name); }
+	struct Type
+	{
+		static TypePtr Create(const std::string& name);
 
-        Type(const std::string &name)
-            : Name(name) {}
+		Type(const std::string& name);
 
-        virtual ~Type() = default;
+		virtual ~Type() = default;
 
-        std::string Name;
-    };
+		std::string Name;
+	};
 
-    struct PointerType : Type
-    {
-        static PointerTypePtr Get(TypePtr base) { return std::make_shared<PointerType>(base); }
+	struct PointerType : Type
+	{
+		static PointerTypePtr Create(TypePtr base);
 
-        PointerType(TypePtr base)
-            : Type(base->Name + "*"),
-              BaseType(base) {}
+		PointerType(TypePtr base);
 
-        TypePtr BaseType;
-    };
+		TypePtr Base;
+	};
 
-    struct ArrayType : Type
-    {
-        static ArrayTypePtr Get(TypePtr base, size_t size) { return std::make_shared<ArrayType>(base, size); }
+	struct ArrayType : Type
+	{
+		static ArrayTypePtr Create(TypePtr base, size_t size);
 
-        ArrayType(TypePtr base, size_t size)
-            : Type(base->Name + "[" + std::to_string(size) + "]"),
-              BaseType(base),
-              Size(size) {}
+		ArrayType(TypePtr base, size_t size);
 
-        TypePtr BaseType;
-        size_t Size;
-    };
+		TypePtr Base;
+		size_t Size;
+	};
 
-    inline std::string make_function_type_name(const TypePtr &result, const std::vector<TypePtr> &args)
-    {
-        std::string name = result->Name + "(";
-        for (size_t i = 0; i < args.size(); i++)
-        {
-            if (i > 0) name += ", ";
-            name += args[i]->Name;
-        }
-        return name + ")";
-    }
+	struct FunctionType : Type
+	{
+		static FunctionTypePtr Create(TypePtr result, const std::vector<TypePtr>& args);
 
-    struct FunctionType : Type
-    {
-        static FunctionTypePtr Get(TypePtr result, const std::vector<TypePtr> &args)
-        {
-            return std::make_shared<FunctionType>(result, args);
-        }
+		FunctionType(TypePtr result, const std::vector<TypePtr>& args);
 
-        FunctionType(TypePtr result, const std::vector<TypePtr> &args)
-            : Type(make_function_type_name(result, args)),
-              Result(result),
-              Args(args) {}
-
-        TypePtr Result;
-        std::vector<TypePtr> Args;
-    };
+		TypePtr Result;
+		std::vector<TypePtr> Args;
+	};
 }

@@ -7,76 +7,37 @@
 
 namespace cb::fe
 {
-    struct Statement
-    {
-        virtual ~Statement() = default;
-    };
+	struct Statement
+	{
+		~Statement() = default;
+	};
 
-    struct FunctionDeclaration : Statement
-    {
-        static FunctionDeclarationPtr Get(const std::string &name, FunctionTypePtr type)
-        {
-            return std::make_shared<FunctionDeclaration>(name, type);
-        }
+	struct RegisterStatement : Statement
+	{
+		static RegisterStatementPtr Create(const std::string& name, ExpressionPtr initializer);
 
-        FunctionDeclaration(const std::string &name, FunctionTypePtr type)
-            : Name(name), Type(type) {}
+		RegisterStatement(const std::string& name, ExpressionPtr initializer);
 
-        std::string Name;
-        FunctionTypePtr Type;
-    };
+		std::string Name;
+		ExpressionPtr Initializer;
+	};
 
-    struct FunctionDefinition : FunctionDeclaration
-    {
-        static FunctionDefinitionPtr Get(const std::string &name, FunctionTypePtr type,
-                                         const std::vector<std::string> &argnames)
-        {
-            return std::make_shared<FunctionDefinition>(name, type, argnames);
-        }
+	struct ReturnStatement : Statement
+	{
+		static ReturnStatementPtr Create(ExpressionPtr value);
 
-        FunctionDefinition(const std::string &name, FunctionTypePtr type, const std::vector<std::string> &argnames)
-            : FunctionDeclaration(name, type), ArgNames(argnames) {}
+		ReturnStatement(ExpressionPtr value);
 
-        std::vector<std::string> ArgNames;
-    };
+		ExpressionPtr Value;
+	};
 
-    struct ReturnStatement : Statement
-    {
-        ExpressionPtr Result;
-    };
+	struct BranchStatement : Statement
+	{
+		static BranchStatementPtr Create(ExpressionPtr index, const std::vector<std::string>& labels);
 
-    struct BreakStatement : Statement
-    {
-        ExpressionPtr Switch;
-        std::vector<LabelPtr> Labels;
-    };
+		BranchStatement(ExpressionPtr index, const std::vector<std::string>& labels);
 
-    struct SymbolStatement : Statement
-    {
-        static SymbolStatementPtr Get(const std::string &name, TypePtr type, ExpressionPtr initializer)
-        {
-            return std::make_shared<SymbolStatement>(name, type, initializer);
-        }
-
-        SymbolStatement(const std::string &name, TypePtr type, ExpressionPtr initializer)
-            : Name(name), Type(type), Initializer(initializer) {}
-
-        std::string Name;
-        TypePtr Type;
-        ExpressionPtr Initializer;
-    };
-
-    struct RegisterStatement : Statement
-    {
-        static RegisterStatementPtr Get(const std::string &name, ExpressionPtr initializer)
-        {
-            return std::make_shared<RegisterStatement>(name, initializer);
-        }
-
-        RegisterStatement(const std::string &name, ExpressionPtr initializer)
-            : Name(name), Initializer(initializer) {}
-
-        std::string Name;
-        ExpressionPtr Initializer;
-    };
+		ExpressionPtr Index;
+		std::vector<std::string> Labels;
+	};
 }

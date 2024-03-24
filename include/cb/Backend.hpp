@@ -1,3 +1,5 @@
 #pragma once
 
-namespace cb::be {}
+namespace cb::be
+{
+}
