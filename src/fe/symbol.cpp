@@ -16,22 +16,32 @@ cb::fe::GlobalVariable::GlobalVariable(const std::string& name, TypePtr type, Ex
 {
 }
 
-cb::fe::FunctionPtr cb::fe::Function::Create(const std::string& name, FunctionTypePtr type, const std::vector<ArgPtr>& args)
+cb::fe::FunctionPtr cb::fe::Function::Create(const std::string& name, FunctionTypePtr type, const std::vector<std::string>& args)
 {
 	return std::make_shared<Function>(name, type, args);
 }
 
-cb::fe::FunctionPtr cb::fe::Function::Create(const std::string& name, FunctionTypePtr type, const std::vector<ArgPtr>& args, const std::vector<StatementPtr>& body)
-{
-	return std::make_shared<Function>(name, type, args, body);
-}
-
-cb::fe::Function::Function(const std::string& name, FunctionTypePtr type, const std::vector<ArgPtr>& args)
-	: Function(name, type, args, {})
+cb::fe::Function::Function(const std::string& name, FunctionTypePtr type, const std::vector<std::string>& args)
+	: Symbol(name, type), Args(args)
 {
 }
 
-cb::fe::Function::Function(const std::string& name, FunctionTypePtr type, const std::vector<ArgPtr>& args, const std::vector<StatementPtr>& body)
-	: Symbol(name, type), Args(args), Body(body)
+void cb::fe::Function::Insert(const StatementPtr& ptr)
 {
+	Body.push_back(ptr);
+}
+
+cb::fe::LabelPtr cb::fe::Label::Create(const std::string& name, const FunctionPtr& func)
+{
+	return std::make_shared<Label>(name, func);
+}
+
+cb::fe::Label::Label(const std::string& name, const FunctionPtr& func)
+	: Name(name), Func(func)
+{
+}
+
+void cb::fe::Label::Insert(const StatementPtr& ptr)
+{
+	Body.push_back(ptr);
 }

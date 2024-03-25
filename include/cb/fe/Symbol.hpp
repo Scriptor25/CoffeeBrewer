@@ -25,15 +25,36 @@ namespace cb::fe
 		ExpressionPtr Initializer;
 	};
 
-	struct Function : Symbol
+	struct Insertable
 	{
-		static FunctionPtr Create(const std::string& name, FunctionTypePtr type, const std::vector<ArgPtr>& args);
-		static FunctionPtr Create(const std::string& name, FunctionTypePtr type, const std::vector<ArgPtr>& args, const std::vector<StatementPtr>& body);
+		virtual ~Insertable() = default;
 
-		Function(const std::string& name, FunctionTypePtr type, const std::vector<ArgPtr>& args);
-		Function(const std::string& name, FunctionTypePtr type, const std::vector<ArgPtr>& args, const std::vector<StatementPtr>& body);
+		virtual void Insert(const StatementPtr& ptr) = 0;
+	};
 
-		std::vector<ArgPtr> Args;
+	struct Function : Symbol, Insertable
+	{
+		static FunctionPtr Create(const std::string& name, FunctionTypePtr type, const std::vector<std::string>& args);
+
+		Function(const std::string& name, FunctionTypePtr type, const std::vector<std::string>& args);
+
+		void Insert(const StatementPtr& ptr);
+
+		std::vector<std::string> Args;
+		std::vector<StatementPtr> Body;
+		std::vector<LabelPtr> Labels;
+	};
+
+	struct Label : Insertable
+	{
+		static LabelPtr Create(const std::string& name, const FunctionPtr& func);
+
+		Label(const std::string& name, const FunctionPtr& func);
+
+		void Insert(const StatementPtr& ptr);
+
+		std::string Name;
+		FunctionPtr Func;
 		std::vector<StatementPtr> Body;
 	};
 }

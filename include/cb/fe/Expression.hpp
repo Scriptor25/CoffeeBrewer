@@ -1,16 +1,17 @@
 #pragma once
 
 #include <cb/Frontend.hpp>
+#include <cb/fe/Statement.hpp>
 
 #include <string>
 #include <vector>
 
 namespace cb::fe
 {
-	struct Expression
+	struct Expression : Statement
 	{
 		Expression(TypePtr type);
-		~Expression() = default;
+		virtual ~Expression() = default;
 
 		TypePtr Type;
 	};
@@ -35,11 +36,12 @@ namespace cb::fe
 
 	struct ConstExpression : Expression
 	{
-		static ConstExpressionPtr Create(TypePtr type, const std::string& value);
+		static ConstExpressionPtr Create(TypePtr type, const std::string& value, ConstType cnsttype);
 
-		ConstExpression(TypePtr type, const std::string& value);
+		ConstExpression(TypePtr type, const std::string& value, ConstType cnsttype);
 
 		std::string Value;
+		ConstType CnstType;
 	};
 
 	struct OperationExpression : Expression

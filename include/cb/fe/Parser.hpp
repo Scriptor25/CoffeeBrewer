@@ -31,9 +31,9 @@ namespace cb::fe
 
 		SymbolPtr NextSymbol();
 		GlobalVariablePtr NextGlobalVariable(const std::string& name, TypePtr type);
-		FunctionPtr NextFunction(const std::string& name, TypePtr result);
+		FunctionPtr NextFunction(const std::string& name, FunctionTypePtr type);
 
-		StatementPtr NextStatement();
+		StatementPtr NextStatement(InsertablePtr& insertable);
 
 		ExpressionPtr NextExpression();
 

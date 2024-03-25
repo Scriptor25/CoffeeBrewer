@@ -9,7 +9,7 @@ namespace cb::fe
 {
 	struct Statement
 	{
-		~Statement() = default;
+		virtual ~Statement() = default;
 	};
 
 	struct RegisterStatement : Statement

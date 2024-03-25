@@ -18,7 +18,28 @@ cb::fe::ExpressionPtr cb::fe::Parser::NextExpression()
 	}
 
 	if (NextIfAt("const"))
-		return ConstExpression::Create(type, Eat().Value);
+	{
+		const auto token = Eat();
+		ConstType cnsttype;
+		switch (token.Type)
+		{
+		case TokenType_Integer:
+			cnsttype = ConstType_Integer;
+			break;
+		case TokenType_Float:
+			cnsttype = ConstType_Float;
+			break;
+		case TokenType_Char:
+			cnsttype = ConstType_Char;
+			break;
+		case TokenType_String:
+			cnsttype = ConstType_String;
+			break;
+		default:
+			throw std::runtime_error("unexpected type");
+		}
+		return ConstExpression::Create(type, token.Value, cnsttype);
+	}
 
 	const auto operation = Expect(TokenType_Identifier).Value;
 	std::vector<ExpressionPtr> args;

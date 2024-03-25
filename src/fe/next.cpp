@@ -99,7 +99,7 @@ cb::fe::Token& cb::fe::Parser::Next()
 		return m_Token = Token(m_Line, floating ? TokenType_Float : TokenType_Integer, value);
 	}
 
-	if (isalpha(c))
+	if (isalpha(c) || c == '_')
 	{
 		std::string value;
 		do
@@ -107,7 +107,7 @@ cb::fe::Token& cb::fe::Parser::Next()
 			value += static_cast<char>(c);
 			Mark();
 			c = Get();
-		} while (isalnum(c));
+		} while (isalnum(c) || c == '_');
 		Reset();
 
 		return m_Token = Token(m_Line, TokenType_Identifier, value);

@@ -25,13 +25,13 @@ cb::fe::SymbolExpression::SymbolExpression(TypePtr type, const std::string& name
 {
 }
 
-cb::fe::ConstExpressionPtr cb::fe::ConstExpression::Create(TypePtr type, const std::string& value)
+cb::fe::ConstExpressionPtr cb::fe::ConstExpression::Create(TypePtr type, const std::string& value, ConstType cnsttype)
 {
-	return std::make_shared<ConstExpression>(type, value);
+	return std::make_shared<ConstExpression>(type, value, cnsttype);
 }
 
-cb::fe::ConstExpression::ConstExpression(TypePtr type, const std::string& value)
-	: Expression(type), Value(value)
+cb::fe::ConstExpression::ConstExpression(TypePtr type, const std::string& value, ConstType cnsttype)
+	: Expression(type), Value(value), CnstType(cnsttype)
 {
 }
 

@@ -1,4 +1,3 @@
-#include <cb/fe/Arg.hpp>
 #include <cb/fe/Parser.hpp>
 #include <cb/fe/Symbol.hpp>
 #include <cb/fe/Type.hpp>
@@ -7,11 +6,14 @@ cb::fe::SymbolPtr cb::fe::Parser::NextSymbol()
 {
 	const auto type = NextType();
 	Expect("@");
-	const auto name = Expect(TokenType_Identifier).Value;
-	if (At("=")) return NextGlobalVariable(name, type);
-	if (At("(")) return NextFunction(name, type);
+	const auto name = NextName();
 
-	throw std::runtime_error("unexpected token");
+	if (At("=")) return NextGlobalVariable(name, type);
+
+	if (const auto funtype = std::dynamic_pointer_cast<FunctionType>(type))
+		return NextFunction(name, funtype);
+
+	throw std::runtime_error("not yet implemented");
 }
 
 cb::fe::GlobalVariablePtr cb::fe::Parser::NextGlobalVariable(const std::string& name, TypePtr type)
@@ -21,39 +23,40 @@ cb::fe::GlobalVariablePtr cb::fe::Parser::NextGlobalVariable(const std::string& 
 	return GlobalVariable::Create(name, type, initializer);
 }
 
-cb::fe::FunctionPtr cb::fe::Parser::NextFunction(const std::string& name, TypePtr result)
+cb::fe::FunctionPtr cb::fe::Parser::NextFunction(const std::string& name, FunctionTypePtr type)
 {
-	std::vector<ArgPtr> args;
-	std::vector<TypePtr> argtypes;
+	std::vector<std::string> args;
 
-	Expect("(");
-	while (!At(")") && !AtEOF())
+	if (NextIfAt("("))
 	{
-		const auto atype = NextType();
-		argtypes.push_back(atype);
+		while (!At(")") && !AtEOF())
+		{
+			Expect("%");
+			const auto arg = NextName();
+			args.push_back(arg);
 
-		auto arg = Arg::Create(atype);
-		args.push_back(arg);
-
-		if (NextIfAt("%"))
-			arg->Name = NextName();
-		else
-			arg->Name = "arg" + std::to_string(args.size() - 1);
-
-		if (!At(")"))
-			Expect(",");
+			if (!At(")"))
+				Expect(",");
+		}
+		Expect(")");
 	}
-	Expect(")");
+	else
+	{
+		for (size_t i = 0; i < type->Args.size(); i++)
+			args.push_back("arg" + std::to_string(i));
+	}
 
-	const auto type = FunctionType::Create(result, argtypes);
-
+	auto function = Function::Create(name, type, args);
 	if (!NextIfAt("{"))
-		return Function::Create(name, type, args);
+		return function;
 
-	std::vector<StatementPtr> statements;
+	InsertablePtr insertable = function;
 	while (!At("}") && !AtEOF())
-		statements.push_back(NextStatement());
+	{
+		const auto statement = NextStatement(insertable);
+		insertable->Insert(statement);
+	}
 	Expect("}");
 
-	return Function::Create(name, type, args, statements);
+	return function;
 }

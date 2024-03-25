@@ -11,8 +11,8 @@ bool cb::fe::Parser::Parse(std::istream& stream)
 	Parser parser(stream);
 	for (parser.Next(); !parser.AtEOF();)
 	{
-		auto sptr = parser.NextSymbol();
-		std::cout << sptr << std::endl;
+		const auto sptr = parser.NextSymbol();
+		std::cout << sptr << std::endl << std::endl;
 	}
 
 	return true;
@@ -25,9 +25,5 @@ cb::fe::Parser::Parser(std::istream& stream)
 
 std::string cb::fe::Parser::NextName()
 {
-	return Expect(
-		TokenType_Identifier
-		| TokenType_Integer
-		| TokenType_String
-		| TokenType_Char).Value;
+	return Expect(TokenType_Identifier | TokenType_Integer).Value;
 }
