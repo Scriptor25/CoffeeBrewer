@@ -41,6 +41,9 @@ cb::fe::ExpressionPtr cb::fe::Parser::NextExpression()
 		return ConstExpression::Create(type, token.Value, cnsttype);
 	}
 
+	if (NextIfAt("empty"))
+		return EmptyExpression::Create(type);
+
 	const auto operation = Expect(TokenType_Identifier).Value;
 	std::vector<ExpressionPtr> args;
 	do

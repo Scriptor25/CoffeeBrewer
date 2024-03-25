@@ -14,7 +14,7 @@ cb::fe::StatementPtr cb::fe::Parser::NextStatement(InsertablePtr& insertable)
 		return RegisterStatement::Create(name, initializer);
 	}
 
-	if (NextIfAt("$")) // TODO
+	if (NextIfAt("$"))
 	{
 		const auto name = NextName();
 		Expect(":");
@@ -52,6 +52,14 @@ cb::fe::StatementPtr cb::fe::Parser::NextStatement(InsertablePtr& insertable)
 			labels.push_back(label);
 		} while (NextIfAt(","));
 		return BranchStatement::Create(index, labels);
+	}
+
+	if (NextIfAt("store"))
+	{
+		const auto ptr = NextExpression();
+		Expect(",");
+		const auto value = NextExpression();
+		return StoreStatement::Create(ptr, value);
 	}
 
 	return NextExpression();

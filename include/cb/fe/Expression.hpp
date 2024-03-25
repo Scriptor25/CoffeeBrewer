@@ -44,6 +44,13 @@ namespace cb::fe
 		ConstType CnstType;
 	};
 
+	struct EmptyExpression : Expression
+	{
+		static EmptyExpressionPtr Create(TypePtr type);
+
+		EmptyExpression(TypePtr type);
+	};
+
 	struct OperationExpression : Expression
 	{
 		static OperationExpressionPtr Create(TypePtr type, const std::string& operation, const std::vector<ExpressionPtr>& args);

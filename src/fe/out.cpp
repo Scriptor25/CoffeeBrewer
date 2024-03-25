@@ -70,6 +70,8 @@ std::ostream& cb::fe::operator<<(std::ostream& out, const StatementPtr& ptr)
 		return out << *p;
 	if (const auto p = std::dynamic_pointer_cast<BranchStatement>(ptr))
 		return out << *p;
+	if (const auto p = std::dynamic_pointer_cast<StoreStatement>(ptr))
+		return out << *p;
 
 	if (const auto p = std::dynamic_pointer_cast<Expression>(ptr))
 		return out << p;
@@ -95,6 +97,11 @@ std::ostream& cb::fe::operator<<(std::ostream& out, const BranchStatement& brk)
 	return out;
 }
 
+std::ostream& cb::fe::operator<<(std::ostream& out, const StoreStatement& sto)
+{
+	return out << "store " << sto.Ptr << ", " << sto.Value;
+}
+
 std::ostream& cb::fe::operator<<(std::ostream& out, const ExpressionPtr& ptr)
 {
 	if (!ptr)
@@ -107,6 +114,8 @@ std::ostream& cb::fe::operator<<(std::ostream& out, const ExpressionPtr& ptr)
 	if (const auto p = std::dynamic_pointer_cast<SymbolExpression>(ptr))
 		return out << *p;
 	if (const auto p = std::dynamic_pointer_cast<ConstExpression>(ptr))
+		return out << *p;
+	if (const auto p = std::dynamic_pointer_cast<EmptyExpression>(ptr))
 		return out << *p;
 	if (const auto p = std::dynamic_pointer_cast<OperationExpression>(ptr))
 		return out << *p;
@@ -133,6 +142,11 @@ std::ostream& cb::fe::operator<<(std::ostream& out, const ConstExpression& cnt)
 	if (cnt.CnstType == ConstType_Char) out << "'";
 	if (cnt.CnstType == ConstType_String) out << "\"";
 	return out;
+}
+
+std::ostream& cb::fe::operator<<(std::ostream& out, const EmptyExpression& emp)
+{
+	return out << " empty";
 }
 
 std::ostream& cb::fe::operator<<(std::ostream& out, const OperationExpression& opn)

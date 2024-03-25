@@ -35,6 +35,16 @@ cb::fe::ConstExpression::ConstExpression(TypePtr type, const std::string& value,
 {
 }
 
+cb::fe::EmptyExpressionPtr cb::fe::EmptyExpression::Create(TypePtr type)
+{
+	return std::make_shared<EmptyExpression>(type);
+}
+
+cb::fe::EmptyExpression::EmptyExpression(TypePtr type)
+	: Expression(type)
+{
+}
+
 cb::fe::OperationExpressionPtr cb::fe::OperationExpression::Create(TypePtr type, const std::string& operation, const std::vector<ExpressionPtr>& args)
 {
 	return std::make_shared<OperationExpression>(type, operation, args);

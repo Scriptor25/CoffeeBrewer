@@ -40,4 +40,14 @@ namespace cb::fe
 		ExpressionPtr Index;
 		std::vector<std::string> Labels;
 	};
+
+	struct StoreStatement : Statement
+	{
+		static StoreStatementPtr Create(ExpressionPtr ptr, ExpressionPtr value);
+
+		StoreStatement(ExpressionPtr ptr, ExpressionPtr value);
+
+		ExpressionPtr Ptr;
+		ExpressionPtr Value;
+	};
 }

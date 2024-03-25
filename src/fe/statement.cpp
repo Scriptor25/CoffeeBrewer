@@ -29,3 +29,13 @@ cb::fe::BranchStatement::BranchStatement(ExpressionPtr index, const std::vector<
 	: Index(index), Labels(labels)
 {
 }
+
+cb::fe::StoreStatementPtr cb::fe::StoreStatement::Create(ExpressionPtr ptr, ExpressionPtr value)
+{
+	return std::make_shared<StoreStatement>(ptr, value);
+}
+
+cb::fe::StoreStatement::StoreStatement(ExpressionPtr ptr, ExpressionPtr value)
+	: Ptr(ptr), Value(value)
+{
+}

@@ -5,7 +5,7 @@
 
 int main(int argc, char **argv)
 {
-    std::ifstream stream("res/hello.cb");
+    std::ifstream stream("res/ghost.cb");
     if (!cb::fe::Parser::Parse(stream))
         return 1;
     return 0;

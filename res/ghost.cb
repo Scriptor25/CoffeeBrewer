@@ -1,0 +1,73 @@
+i8* @title = i8* const "Ghost Game\n\n"
+i8* @quest = i8* const "There are three doors.\nThere's a ghost behind one of them.\nWhich one do you open?\n"
+i8* @gameover = i8* const "Run!\nGame over! Your score: %d\n"
+i8* @question = i8* const "1, 2 or 3? "
+i8* @a1 = i8* const "1"
+i8* @a2 = i8* const "2"
+i8* @a3 = i8* const "3"
+
+void(i8*, &) @printf
+
+i32(i32, i8**) @main(%argc, %argv)
+{
+	%title = i8* load i8** @title, i32 const 1
+	%quest = i8* load i8** @quest, i32 const 1
+	%gameover = i8* load i8** @gameover, i32 const 1
+	%question = i8* load i8** @question, i32 const 1
+	%a1 = i8* load i8** @a1, i32 const 1
+	%a2 = i8* load i8** @a2, i32 const 1
+	%a3 = i8* load i8** @a3, i32 const 1
+
+	%still_running = i1* alloca i1 const 1, i32 const 1
+	%score = i32* alloca i32 const 0, i32 const 1
+	%door = i8** alloca i8* empty, i32 const 1
+
+	void call void(i8*, &) @printf, i8* %title
+
+	br i1 const 1, $cond0
+$cond0:
+	%0 = i1 load i1* %still_running, i32 const 1
+	br i1 %0, $loop0, $end0
+$loop0:
+	%door_with_ghost = i32 call i32(i32, i32) @randomInt, i32 const 1, i32 const 3
+	void call void(i8*, &) @printf, i8* %quest
+	store i8** %door, i8* empty
+	br i1 const 1, $cond1
+$cond1:
+	%1 = i8* load i8** %door, i32 const 1
+	%2 = i1 call i1(i8*, i8*) @strcmp, i8* %1, i8* %a1
+	%3 = i1 inot i1 %2
+	%4 = i1 call i1(i8*, i8*) @strcmp, i8* %1, i8* %a2
+	%5 = i1 inot i1 %4
+	%6 = i1 call i1(i8*, i8*) @strcmp, i8* %1, i8* %a3
+	%7 = i1 inot i1 %6
+	%8 = i1 iand i1 %3, i1 %5
+	%9 = i1 iand i1 %8, i1 %7
+	br i1 %9, $loop1, $end1
+$loop1:
+	%10 = i8* call i8*(i8*, &) @readf, i8* %question
+	store i8** %door, i8* %10
+	br i1 const 1, $cond1
+$end1:
+	%11 = i8* load i8** %door, i32 const 1
+	%door_num = i32 call i32(i8*) @stoi, i8* %11
+	%12 = i1 icmpeq i32 %door_num, i32 %door_with_ghost
+	br i1 %12, $then0, $else0
+$then0:
+	void call void(i8*, &) @printf, i8* %ghost
+	store i1* %still_running, i1 const 0
+	br i1 const 1, $end2
+$else0:
+	void call void(i8*, &) @printf, i8* %ok
+	%13 = i32 load i32* %score, i32 const 1
+	%14 = i32 iadd i32 %13, i32 const 1
+	store i32* %score, i32 %14
+	br i1 const 1, $end2
+$end2:
+	br i1 const 1, $cond0
+$end0:
+	%15 = i32 load i32* %score, i32 const 1
+	void call void(i8*, &) @printf, i8* %gameover, i32 %15
+
+	ret i32 const 0
+}

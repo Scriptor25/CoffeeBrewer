@@ -71,6 +71,10 @@ namespace cb::fe
 	typedef std::shared_ptr<BranchStatement> BranchStatementPtr;
 	std::ostream& operator<<(std::ostream& out, const BranchStatement& brk);
 
+	struct StoreStatement;
+	typedef std::shared_ptr<StoreStatement> StoreStatementPtr;
+	std::ostream& operator<<(std::ostream& out, const StoreStatement& sto);
+
 	struct Expression;
 	typedef std::shared_ptr<Expression> ExpressionPtr;
 	std::ostream& operator<<(std::ostream& out, const ExpressionPtr& ptr);
@@ -94,6 +98,10 @@ namespace cb::fe
 	struct ConstExpression;
 	typedef std::shared_ptr<ConstExpression> ConstExpressionPtr;
 	std::ostream& operator<<(std::ostream& out, const ConstExpression& cnt);
+
+	struct EmptyExpression;
+	typedef std::shared_ptr<EmptyExpression> EmptyExpressionPtr;
+	std::ostream& operator<<(std::ostream& out, const EmptyExpression& emp);
 
 	struct OperationExpression;
 	typedef std::shared_ptr<OperationExpression> OperationExpressionPtr;

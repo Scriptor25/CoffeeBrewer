@@ -3,6 +3,9 @@
 
 cb::fe::TypePtr cb::fe::Parser::NextType()
 {
+	if (NextIfAt("&"))
+		return Type::Create("&");
+
 	const auto name = Expect(TokenType_Identifier).Value;
 	const auto base = Type::Create(name);
 	return NextType(base);
