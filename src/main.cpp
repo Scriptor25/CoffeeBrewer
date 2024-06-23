@@ -1,12 +1,21 @@
-#include <cb/CoffeeBrewer.hpp>
-#include <cb/fe/Parser.hpp>
-
 #include <fstream>
+#include <iostream>
+#include <cb/fe/parser.hpp>
 
-int main(int argc, char **argv)
+int main()
 {
-    std::ifstream stream("res/ghost.cb");
-    if (!cb::fe::Parser::Parse(stream))
+    std::ifstream stream("../examples/fib.cb");
+    if (!stream)
+    {
+        std::cerr << "failed to open stream" << std::endl;
         return 1;
-    return 0;
+    }
+
+    if (const auto error = cb::fe::Parser::Parse("examples/fib.cb", stream))
+    {
+        std::cerr << "failed to parse" << std::endl;
+        return error;
+    }
+
+    stream.close();
 }
