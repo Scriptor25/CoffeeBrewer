@@ -17,6 +17,8 @@ namespace cb::fe
         TokenType_LabelName,
         TokenType_Equal,
         TokenType_Comma,
+        TokenType_Period,
+        TokenType_Colon,
         TokenType_Asterisk,
         TokenType_ParenOpen,
         TokenType_ParenClose,

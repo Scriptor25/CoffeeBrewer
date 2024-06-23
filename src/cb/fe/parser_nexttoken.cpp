@@ -70,6 +70,22 @@ cb::fe::Token& cb::fe::Parser::NextToken()
                     .Type = TokenType_Comma,
                     .Value = ","
                 };
+            case '.':
+                location = m_Location;
+                NextChar();
+                return m_Token = {
+                    .Where = location,
+                    .Type = TokenType_Period,
+                    .Value = "."
+                };
+            case ':':
+                location = m_Location;
+                NextChar();
+                return m_Token = {
+                    .Where = location,
+                    .Type = TokenType_Colon,
+                    .Value = ":"
+                };
             case '*':
                 location = m_Location;
                 NextChar();

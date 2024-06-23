@@ -19,7 +19,7 @@ std::ostream& cb::fe::operator<<(std::ostream& lhs, const TokenType& rhs)
     case TokenType_BraceClose: return lhs << "BraceClose";
     case TokenType_BracketOpen: return lhs << "BracketOpen";
     case TokenType_BracketClose: return lhs << "BracketClose";
-    default: return lhs << "None";
+    default: throw std::runtime_error("not implemented");
     }
 }
 

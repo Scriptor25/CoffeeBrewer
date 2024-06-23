@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <cb/fe/fe.hpp>
 
 namespace cb::fe
@@ -11,6 +12,8 @@ namespace cb::fe
 
         explicit Type(const std::string& name);
         virtual ~Type();
+
+        std::string Name;
     };
 
     struct PointerType : Type
@@ -18,12 +21,18 @@ namespace cb::fe
         static TypePtr Get(const TypePtr& base);
 
         PointerType(const std::string& name, const TypePtr& base);
+
+        TypePtr Base;
     };
 
     struct FunctionType : Type
     {
-        static TypePtr Get(const TypePtr& base, const std::vector<TypePtr>& args);
+        static TypePtr Get(const TypePtr& base, const std::vector<TypePtr>& args, bool is_varargs);
 
-        FunctionType(const std::string& name, const TypePtr& base, const std::vector<TypePtr>& args);
+        FunctionType(const std::string& name, const TypePtr& base, const std::vector<TypePtr>& args, bool is_varargs);
+
+        TypePtr Base;
+        std::vector<TypePtr> Args;
+        bool IsVarargs;
     };
 }

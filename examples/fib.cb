@@ -2,7 +2,7 @@ i32 @iterations = i32 const 10
 
 i32(i32) @fib
 
-i32() @main [style=c]
+i32() [linkage=extern, style=c] @main()
 {
     %0 = i32 load i32* @iterations, i32 const 0 # t0 = iterations[0]
     %1 = i32 call i32(i32) @fib, i32 %0         # t1 = fib(t0)
@@ -19,14 +19,14 @@ i32(i32) @fib(%n)
     store i32* %i, i32 const 0, i32 const 0 # i[0] = 0
 $loop:
     %i0 = i32 load i32* %i, i32 const 0     # i0 = i[0]
-    %cmp = i1 cmpge i32 %i0, i32 %n         # cmp = i0 >= n
+    %cmp = i1 op cmp_ge, i32 %i0, i32 %n    # cmp = i0 >= n
     br i1 %cmp, $end                        # if (cmp) goto end
     %a0 = i32 load i32* %a, i32 const 0     # a0 = a[0]
     %b0 = i32 load i32* %b, i32 const 0     # b0 = b[0]
-    %c = i32 add i32 %a0, i32 %b0           # c = a0 + b0
+    %c = i32 op add, i32 %a0, i32 %b0       # c = a0 + b0
     store i32* %b, i32 const 0, i32 %a0     # b[0] = a0
     store i32* %a, i32 const 0, i32 %c      # a[0] = c
-    %i1 = i32 add i32 %i0, i32 const 1      # i1 = i0 + 1
+    %i1 = i32 op add, i32 %i0, i32 const 1  # i1 = i0 + 1
     store i32* %i, i32 const 0, i32 %i1     # i[0] = i1
     br i1 const 1, $loop                    # goto loop
 $end:

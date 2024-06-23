@@ -1,8 +1,8 @@
 i8* @message = const i8* "Hello World!"
 
-i32(i8*) @puts [style=c]
+i32(i8*) [linkage=extern, style=c] @puts
 
-i32() @main [style=c]
+i32() [linkage=extern, style=c] @main()
 {
     %msg = i8* load i8** @message, i32 const 0
     call i32(i8*) @puts, %msg
