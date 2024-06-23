@@ -3,10 +3,10 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <cb/fe/fe.hpp>
-#include <cb/fe/location.hpp>
+#include <cb/frontend/Frontend.hpp>
+#include <cb/frontend/Location.hpp>
 
-namespace cb::fe
+namespace cb::frontend
 {
     struct Symbol
     {

@@ -1,6 +1,6 @@
-#include <cb/fe/token.hpp>
+#include <cb/frontend/Token.hpp>
 
-std::ostream& cb::fe::operator<<(std::ostream& lhs, const TokenType& rhs)
+std::ostream& cb::frontend::operator<<(std::ostream& lhs, const TokenType& rhs)
 {
     switch (rhs)
     {
@@ -23,7 +23,7 @@ std::ostream& cb::fe::operator<<(std::ostream& lhs, const TokenType& rhs)
     }
 }
 
-std::ostream& cb::fe::operator<<(std::ostream& lhs, const Token& rhs)
+std::ostream& cb::frontend::operator<<(std::ostream& lhs, const Token& rhs)
 {
     return lhs << rhs.Where << ": " << rhs.Value << " -> " << rhs.Type;
 }

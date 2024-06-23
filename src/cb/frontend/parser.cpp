@@ -1,7 +1,7 @@
-#include <cb/fe/parser.hpp>
-#include <cb/fe/symbol.hpp>
+#include <cb/frontend/Parser.hpp>
+#include <cb/frontend/Symbol.hpp>
 
-int cb::fe::Parser::Parse(const std::filesystem::path& filename, std::istream& stream, const SymbolConsumer& consumer)
+int cb::frontend::Parser::Parse(const std::filesystem::path& filename, std::istream& stream, const SymbolConsumer& consumer)
 {
     Parser parser(filename, stream);
 
@@ -12,27 +12,27 @@ int cb::fe::Parser::Parse(const std::filesystem::path& filename, std::istream& s
     return error;
 }
 
-cb::fe::Parser::Parser(const std::filesystem::path& filename, std::istream& stream)
+cb::frontend::Parser::Parser(const std::filesystem::path& filename, std::istream& stream)
     : m_Stream(stream), m_Location{.Filename = filename, .Row = 1, .Column = 0}
 {
 }
 
-bool cb::fe::Parser::AtEOF() const
+bool cb::frontend::Parser::AtEOF() const
 {
     return m_Token.Type == TokenType_EndOfFile;
 }
 
-bool cb::fe::Parser::At(const TokenType type) const
+bool cb::frontend::Parser::At(const TokenType type) const
 {
     return m_Token.Type == type;
 }
 
-bool cb::fe::Parser::At(const std::string& value) const
+bool cb::frontend::Parser::At(const std::string& value) const
 {
     return m_Token.Value == value;
 }
 
-bool cb::fe::Parser::SkipIfAt(const TokenType type)
+bool cb::frontend::Parser::SkipIfAt(const TokenType type)
 {
     if (!At(type))
         return false;
@@ -41,7 +41,7 @@ bool cb::fe::Parser::SkipIfAt(const TokenType type)
     return true;
 }
 
-bool cb::fe::Parser::SkipIfAt(const std::string& value)
+bool cb::frontend::Parser::SkipIfAt(const std::string& value)
 {
     if (!At(value))
         return false;
@@ -50,7 +50,7 @@ bool cb::fe::Parser::SkipIfAt(const std::string& value)
     return true;
 }
 
-cb::fe::Token cb::fe::Parser::Expect(const TokenType type)
+cb::frontend::Token cb::frontend::Parser::Expect(const TokenType type)
 {
     if (!At(type))
         throw std::runtime_error("unexpected token type");
@@ -60,7 +60,7 @@ cb::fe::Token cb::fe::Parser::Expect(const TokenType type)
     return token;
 }
 
-void cb::fe::Parser::Expect(const std::string& value)
+void cb::frontend::Parser::Expect(const std::string& value)
 {
     if (!At(value))
         throw std::runtime_error("unexpected token value");

@@ -1,23 +1,23 @@
 #include <map>
-#include <cb/fe/type.hpp>
+#include <cb/frontend/Type.hpp>
 
-static std::map<std::string, cb::fe::TypePtr> Types;
+static std::map<std::string, cb::frontend::TypePtr> Types;
 
-cb::fe::TypePtr cb::fe::Type::Get(const std::string& name)
+cb::frontend::TypePtr cb::frontend::Type::Get(const std::string& name)
 {
     auto& ref = Types[name];
     if (!ref) ref = std::make_shared<Type>(name);
     return ref;
 }
 
-cb::fe::Type::Type(const std::string& name)
+cb::frontend::Type::Type(const std::string& name)
     : Name(name)
 {
 }
 
-cb::fe::Type::~Type() = default;
+cb::frontend::Type::~Type() = default;
 
-cb::fe::TypePtr cb::fe::PointerType::Get(const TypePtr& base)
+cb::frontend::TypePtr cb::frontend::PointerType::Get(const TypePtr& base)
 {
     auto name = base->Name + '*';
 
@@ -26,12 +26,12 @@ cb::fe::TypePtr cb::fe::PointerType::Get(const TypePtr& base)
     return ref;
 }
 
-cb::fe::PointerType::PointerType(const std::string& name, const TypePtr& base)
+cb::frontend::PointerType::PointerType(const std::string& name, const TypePtr& base)
     : Type(name), Base(base)
 {
 }
 
-cb::fe::TypePtr cb::fe::FunctionType::Get(const TypePtr& base, const std::vector<TypePtr>& args, const bool is_varargs)
+cb::frontend::TypePtr cb::frontend::FunctionType::Get(const TypePtr& base, const std::vector<TypePtr>& args, const bool is_varargs)
 {
     auto name = base->Name + '(';
     for (size_t i = 0; i < args.size(); ++i)
@@ -47,7 +47,7 @@ cb::fe::TypePtr cb::fe::FunctionType::Get(const TypePtr& base, const std::vector
     return ref;
 }
 
-cb::fe::FunctionType::FunctionType(const std::string& name, const TypePtr& base, const std::vector<TypePtr>& args, const bool is_varargs)
+cb::frontend::FunctionType::FunctionType(const std::string& name, const TypePtr& base, const std::vector<TypePtr>& args, const bool is_varargs)
     : Type(name), Base(base), Args(args), IsVarargs(is_varargs)
 {
 }

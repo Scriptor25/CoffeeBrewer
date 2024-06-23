@@ -1,9 +1,9 @@
 #include <fstream>
 #include <iostream>
-#include <cb/fe/parser.hpp>
-#include <cb/fe/symbol.hpp>
+#include <cb/frontend/Parser.hpp>
+#include <cb/frontend/Symbol.hpp>
 
-static int consumer(const cb::fe::SymbolPtr& symbol)
+static int consumer(const cb::frontend::SymbolPtr& symbol)
 {
     // TODO: Build instruction list (flatten AST)
     std::cout << symbol->Where << ':' << std::endl << symbol << std::endl;
@@ -21,7 +21,7 @@ int main()
         return 1;
     }
 
-    const auto error = cb::fe::Parser::Parse(filename, stream, consumer);
+    const auto error = cb::frontend::Parser::Parse(filename, stream, consumer);
     stream.close();
 
     if (error) std::cerr << "failed to parse" << std::endl;

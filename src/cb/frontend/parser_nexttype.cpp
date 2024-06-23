@@ -1,8 +1,8 @@
 #include <vector>
-#include <cb/fe/parser.hpp>
-#include <cb/fe/type.hpp>
+#include <cb/frontend/Parser.hpp>
+#include <cb/frontend/Type.hpp>
 
-cb::fe::TypePtr cb::fe::Parser::NextType()
+cb::frontend::TypePtr cb::frontend::Parser::NextType()
 {
     const auto name = Expect(TokenType_ID).Value;
     auto base = Type::Get(name);

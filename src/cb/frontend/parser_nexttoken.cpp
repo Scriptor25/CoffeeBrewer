@@ -1,4 +1,4 @@
-#include <cb/fe/parser.hpp>
+#include <cb/frontend/Parser.hpp>
 
 #define STATE_NORMAL 0
 #define STATE_COMMENT 1
@@ -8,13 +8,13 @@
 #define STATE_ID 5
 #define STATE_NUMBER 6
 
-int cb::fe::Parser::NextChar()
+int cb::frontend::Parser::NextChar()
 {
     ++m_Location.Column;
     return m_C = m_Stream.get();
 }
 
-cb::fe::Token& cb::fe::Parser::NextToken()
+cb::frontend::Token& cb::frontend::Parser::NextToken()
 {
     if (m_C == EOF)
         NextChar();

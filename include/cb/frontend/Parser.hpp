@@ -3,9 +3,9 @@
 #include <filesystem>
 #include <functional>
 #include <map>
-#include <cb/fe/token.hpp>
+#include <cb/frontend/Token.hpp>
 
-namespace cb::fe
+namespace cb::frontend
 {
     typedef std::function<int(const SymbolPtr& symbol)> SymbolConsumer;
 

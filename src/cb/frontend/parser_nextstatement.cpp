@@ -1,7 +1,7 @@
-#include <cb/fe/parser.hpp>
-#include <cb/fe/statement.hpp>
+#include <cb/frontend/Parser.hpp>
+#include <cb/frontend/Statement.hpp>
 
-cb::fe::StatementPtr cb::fe::Parser::NextStatement()
+cb::frontend::StatementPtr cb::frontend::Parser::NextStatement()
 {
     if (At(TokenType_RegisterName)) return NextRegisterStatement();
     if (At(TokenType_LabelName)) return NextLabelStatement();
@@ -12,7 +12,7 @@ cb::fe::StatementPtr cb::fe::Parser::NextStatement()
     throw std::runtime_error("not implemented");
 }
 
-cb::fe::StatementPtr cb::fe::Parser::NextRegisterStatement()
+cb::frontend::StatementPtr cb::frontend::Parser::NextRegisterStatement()
 {
     const auto where = m_Token.Where;
     const auto name = Expect(TokenType_RegisterName).Value;
@@ -21,7 +21,7 @@ cb::fe::StatementPtr cb::fe::Parser::NextRegisterStatement()
     return std::make_shared<RegisterStatement>(where, name, value);
 }
 
-cb::fe::StatementPtr cb::fe::Parser::NextLabelStatement()
+cb::frontend::StatementPtr cb::frontend::Parser::NextLabelStatement()
 {
     const auto where = m_Token.Where;
     const auto name = Expect(TokenType_LabelName).Value;
@@ -29,7 +29,7 @@ cb::fe::StatementPtr cb::fe::Parser::NextLabelStatement()
     return std::make_shared<LabelStatement>(where, name);
 }
 
-cb::fe::StatementPtr cb::fe::Parser::NextReturnStatement()
+cb::frontend::StatementPtr cb::frontend::Parser::NextReturnStatement()
 {
     const auto where = m_Token.Where;
     Expect("ret");
@@ -41,7 +41,7 @@ cb::fe::StatementPtr cb::fe::Parser::NextReturnStatement()
     return std::make_shared<ReturnStatement>(where, value);
 }
 
-cb::fe::StatementPtr cb::fe::Parser::NextStoreStatement()
+cb::frontend::StatementPtr cb::frontend::Parser::NextStoreStatement()
 {
     const auto where = m_Token.Where;
     Expect("store");
@@ -53,7 +53,7 @@ cb::fe::StatementPtr cb::fe::Parser::NextStoreStatement()
     return std::make_shared<StoreStatement>(where, base, offset, value);
 }
 
-cb::fe::StatementPtr cb::fe::Parser::NextBranchStatment()
+cb::frontend::StatementPtr cb::frontend::Parser::NextBranchStatment()
 {
     const auto where = m_Token.Where;
     Expect("br");

@@ -1,8 +1,8 @@
 #include <vector>
-#include <cb/fe/expression.hpp>
-#include <cb/fe/parser.hpp>
+#include <cb/frontend/Expression.hpp>
+#include <cb/frontend/Parser.hpp>
 
-cb::fe::ExpressionPtr cb::fe::Parser::NextExpression()
+cb::frontend::ExpressionPtr cb::frontend::Parser::NextExpression()
 {
     const auto where = m_Token.Where;
     const auto type = NextType();

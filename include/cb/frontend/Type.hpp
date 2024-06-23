@@ -2,9 +2,9 @@
 
 #include <string>
 #include <vector>
-#include <cb/fe/fe.hpp>
+#include <cb/frontend/Frontend.hpp>
 
-namespace cb::fe
+namespace cb::frontend
 {
     struct Type
     {

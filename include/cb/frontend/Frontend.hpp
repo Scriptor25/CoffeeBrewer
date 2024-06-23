@@ -2,7 +2,7 @@
 
 #include <memory>
 
-namespace cb::fe
+namespace cb::frontend
 {
     struct Location;
     struct Token;

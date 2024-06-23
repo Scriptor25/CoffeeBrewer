@@ -1,8 +1,8 @@
 #include <map>
-#include <cb/fe/parser.hpp>
-#include <cb/fe/symbol.hpp>
+#include <cb/frontend/Parser.hpp>
+#include <cb/frontend/Symbol.hpp>
 
-cb::fe::SymbolPtr cb::fe::Parser::NextSymbol()
+cb::frontend::SymbolPtr cb::frontend::Parser::NextSymbol()
 {
     const auto where = m_Token.Where;
     const auto type = NextType();
@@ -28,13 +28,13 @@ cb::fe::SymbolPtr cb::fe::Parser::NextSymbol()
     return std::make_shared<Symbol>(where, type, mods, name);
 }
 
-cb::fe::SymbolPtr cb::fe::Parser::NextVariableSymbol(const Location& where, const TypePtr& type, const std::map<std::string, std::string>& mods, const std::string& name)
+cb::frontend::SymbolPtr cb::frontend::Parser::NextVariableSymbol(const Location& where, const TypePtr& type, const std::map<std::string, std::string>& mods, const std::string& name)
 {
     const auto value = NextExpression();
     return std::make_shared<VariableSymbol>(where, type, mods, name, value);
 }
 
-cb::fe::SymbolPtr cb::fe::Parser::NextFunctionSymbol(const Location& where, const TypePtr& type, const std::map<std::string, std::string>& mods, const std::string& name)
+cb::frontend::SymbolPtr cb::frontend::Parser::NextFunctionSymbol(const Location& where, const TypePtr& type, const std::map<std::string, std::string>& mods, const std::string& name)
 {
     std::vector<std::string> args;
     while (!AtEOF() && !At(TokenType_ParenClose))

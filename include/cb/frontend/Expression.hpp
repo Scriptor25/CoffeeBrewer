@@ -1,11 +1,11 @@
 #pragma once
 
 #include <vector>
-#include <cb/fe/fe.hpp>
-#include <cb/fe/statement.hpp>
-#include <cb/fe/token.hpp>
+#include <cb/frontend/Frontend.hpp>
+#include <cb/frontend/Statement.hpp>
+#include <cb/frontend/Token.hpp>
 
-namespace cb::fe
+namespace cb::frontend
 {
     struct Expression : Statement
     {
