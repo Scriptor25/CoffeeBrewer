@@ -1,3 +1,4 @@
+#include <cb/frontend/Expression.hpp>
 #include <cb/frontend/Parser.hpp>
 #include <cb/frontend/Statement.hpp>
 
@@ -9,7 +10,7 @@ cb::frontend::StatementPtr cb::frontend::Parser::NextStatement()
     if (At("store")) return NextStoreStatement();
     if (At("br")) return NextBranchStatment();
 
-    throw std::runtime_error("not implemented");
+    return NextExpression();
 }
 
 cb::frontend::StatementPtr cb::frontend::Parser::NextRegisterStatement()
@@ -57,8 +58,16 @@ cb::frontend::StatementPtr cb::frontend::Parser::NextBranchStatment()
 {
     const auto where = m_Token.Where;
     Expect("br");
+    if (At(TokenType_LabelName))
+    {
+        const auto dest = Expect(TokenType_LabelName).Value;
+        return std::make_shared<BranchStatement>(where, dest);
+    }
+
     const auto condition = NextExpression();
     Expect(TokenType_Comma);
-    const auto destination = Expect(TokenType_LabelName).Value;
-    return std::make_shared<BranchStatement>(where, condition, destination);
+    const auto dest_then = Expect(TokenType_LabelName).Value;
+    Expect(TokenType_Comma);
+    const auto dest_else = Expect(TokenType_LabelName).Value;
+    return std::make_shared<ConditionedBranchStatement>(where, condition, dest_then, dest_else);
 }

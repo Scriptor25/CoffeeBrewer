@@ -23,6 +23,8 @@ namespace cb::frontend
     struct LabelStatement;
     struct ReturnStatement;
     struct StoreStatement;
+    struct ConditionedBranchStatement;
+    struct BranchStatement;
     typedef std::shared_ptr<Statement> StatementPtr;
 
     struct Expression;

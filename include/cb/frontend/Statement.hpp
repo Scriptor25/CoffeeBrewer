@@ -54,12 +54,22 @@ namespace cb::frontend
 
     std::ostream& operator<<(std::ostream& lhs, const StoreStatement& rhs);
 
-    struct BranchStatement : Statement
+    struct ConditionedBranchStatement : Statement
     {
-        BranchStatement(const Location& where, const ExpressionPtr& condition, const std::string& destination);
+        ConditionedBranchStatement(const Location& where, const ExpressionPtr& condition, const std::string& dest_then, const std::string& dest_else);
 
         ExpressionPtr Condition;
-        std::string Destination;
+        std::string DestThen;
+        std::string DestElse;
+    };
+
+    std::ostream& operator<<(std::ostream& lhs, const ConditionedBranchStatement& rhs);
+
+    struct BranchStatement : Statement
+    {
+        BranchStatement(const Location& where, const std::string& dest);
+
+        std::string Dest;
     };
 
     std::ostream& operator<<(std::ostream& lhs, const BranchStatement& rhs);

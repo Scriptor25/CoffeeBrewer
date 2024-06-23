@@ -12,6 +12,7 @@ namespace cb::frontend
         TokenType_ID,
         TokenType_Int,
         TokenType_Float,
+        TokenType_String,
         TokenType_SymbolName,
         TokenType_RegisterName,
         TokenType_LabelName,

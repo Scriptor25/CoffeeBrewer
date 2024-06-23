@@ -8,6 +8,7 @@ std::ostream& cb::frontend::operator<<(std::ostream& lhs, const TokenType& rhs)
     case TokenType_ID: return lhs << "ID";
     case TokenType_Int: return lhs << "Int";
     case TokenType_Float: return lhs << "Float";
+    case TokenType_String: return lhs << "String";
     case TokenType_SymbolName: return lhs << "SymbolName";
     case TokenType_RegisterName: return lhs << "RegisterName";
     case TokenType_LabelName: return lhs << "LabelName";
@@ -19,6 +20,7 @@ std::ostream& cb::frontend::operator<<(std::ostream& lhs, const TokenType& rhs)
     case TokenType_BraceClose: return lhs << "BraceClose";
     case TokenType_BracketOpen: return lhs << "BracketOpen";
     case TokenType_BracketClose: return lhs << "BracketClose";
+    case TokenType_Comma: return lhs << "Comma";
     default: throw std::runtime_error("not implemented");
     }
 }

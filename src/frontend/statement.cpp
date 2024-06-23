@@ -21,6 +21,8 @@ std::ostream& cb::frontend::operator<<(std::ostream& lhs, const StatementPtr& rh
         return lhs << *p;
     if (const auto p = std::dynamic_pointer_cast<StoreStatement>(rhs))
         return lhs << *p;
+    if (const auto p = std::dynamic_pointer_cast<ConditionedBranchStatement>(rhs))
+        return lhs << *p;
     if (const auto p = std::dynamic_pointer_cast<BranchStatement>(rhs))
         return lhs << *p;
 
@@ -69,12 +71,22 @@ std::ostream& cb::frontend::operator<<(std::ostream& lhs, const StoreStatement& 
     return lhs << "store " << rhs.Base << ", " << rhs.Offset << ", " << rhs.Value;
 }
 
-cb::frontend::BranchStatement::BranchStatement(const Location& where, const ExpressionPtr& condition, const std::string& destination)
-    : Statement(where), Condition(condition), Destination(destination)
+cb::frontend::ConditionedBranchStatement::ConditionedBranchStatement(const Location& where, const ExpressionPtr& condition, const std::string& dest_then, const std::string& dest_else)
+    : Statement(where), Condition(condition), DestThen(dest_then), DestElse(dest_else)
+{
+}
+
+std::ostream& cb::frontend::operator<<(std::ostream& lhs, const ConditionedBranchStatement& rhs)
+{
+    return lhs << "br " << rhs.Condition << ", $" << rhs.DestThen << ", $" << rhs.DestElse;
+}
+
+cb::frontend::BranchStatement::BranchStatement(const Location& where, const std::string& dest)
+    : Statement(where), Dest(dest)
 {
 }
 
 std::ostream& cb::frontend::operator<<(std::ostream& lhs, const BranchStatement& rhs)
 {
-    return lhs << "br " << rhs.Condition << ", $" << rhs.Destination;
+    return lhs << "br $" << rhs.Dest;
 }

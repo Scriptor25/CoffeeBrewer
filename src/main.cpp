@@ -3,10 +3,12 @@
 #include <cb/frontend/Parser.hpp>
 #include <cb/frontend/Symbol.hpp>
 
-static int consumer(const cb::frontend::SymbolPtr& symbol)
+int consumer(const cb::frontend::SymbolPtr& symbol)
 {
-    // TODO: Build instruction list (flatten AST)
     std::cout << symbol->Where << ':' << std::endl << symbol << std::endl;
+
+    // TODO: flatten AST into instruction list (similar to assembly)
+
     return 0;
 }
 
@@ -25,5 +27,7 @@ int main()
     stream.close();
 
     if (error) std::cerr << "failed to parse" << std::endl;
+    // else TODO: call main/entry point function
+
     return error;
 }

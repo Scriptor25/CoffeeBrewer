@@ -7,6 +7,7 @@
 #define STATE_LABEL_NAME 4
 #define STATE_ID 5
 #define STATE_NUMBER 6
+#define STATE_STRING 7
 
 int cb::frontend::Parser::NextChar()
 {
@@ -53,6 +54,10 @@ cb::frontend::Token& cb::frontend::Parser::NextToken()
                 location = m_Location;
                 origin = STATE_LABEL_NAME;
                 state = STATE_ID;
+                break;
+            case '"':
+                location = m_Location;
+                state = STATE_STRING;
                 break;
             case '=':
                 location = m_Location;
@@ -234,6 +239,19 @@ cb::frontend::Token& cb::frontend::Parser::NextToken()
                     .Value = value
                 };
             }
+            break;
+
+        case STATE_STRING:
+            if (m_C == '"')
+            {
+                NextChar();
+                return m_Token = {
+                    .Where = location,
+                    .Type = TokenType_String,
+                    .Value = value
+                };
+            }
+            value += static_cast<char>(m_C);
             break;
 
         default:
