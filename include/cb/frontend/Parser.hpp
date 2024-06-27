@@ -34,14 +34,13 @@ namespace cb::frontend
         SymbolPtr NextVariableSymbol(const Location& where, const TypePtr& type, const std::map<std::string, std::string>& mods, const std::string& name);
         SymbolPtr NextFunctionSymbol(const Location& where, const TypePtr& type, const std::map<std::string, std::string>& mods, const std::string& name);
 
-        StatementPtr NextStatement();
-        StatementPtr NextRegisterStatement();
-        StatementPtr NextLabelStatement();
-        StatementPtr NextReturnStatement();
-        StatementPtr NextStoreStatement();
-        StatementPtr NextBranchStatment();
+        InstructionPtr NextStatement(const FunctionSymbolPtr& parent);
+        InstructionPtr NextLabelStatement();
+        InstructionPtr NextReturnStatement();
+        InstructionPtr NextStoreStatement();
+        InstructionPtr NextBranchStatment(const FunctionSymbolPtr& parent);
 
-        ExpressionPtr NextExpression();
+        InstructionPtr NextExpression(const std::string& reg);
 
     private:
         std::istream& m_Stream;

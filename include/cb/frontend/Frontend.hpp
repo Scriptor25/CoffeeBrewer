@@ -6,33 +6,38 @@ namespace cb::frontend
 {
     struct Location;
     struct Token;
+
     class Parser;
 
     struct Type;
-    struct PointerType;
     struct FunctionType;
+    struct PointerType;
+
     typedef std::shared_ptr<Type> TypePtr;
+    typedef std::shared_ptr<FunctionType> FunctionTypePtr;
+    typedef std::shared_ptr<PointerType> PointerTypePtr;
 
     struct Symbol;
-    struct VariableSymbol;
+    struct Block;
     struct FunctionSymbol;
+    struct VariableSymbol;
+
+    struct Instruction;
+    struct AllocaInstruction;
+    struct BranchInstruction;
+    struct CallInstruction;
+    struct ConditionBranchInstruction;
+    struct ConstInstruction;
+    struct GetRegisterInstruction;
+    struct LabelInstruction;
+    struct LoadInstruction;
+    struct OperationInstruction;
+    struct ReturnInstruction;
+    struct StoreInstruction;
+    struct SymbolInstruction;
+
     typedef std::shared_ptr<Symbol> SymbolPtr;
-
-    struct Statement;
-    struct RegisterStatement;
-    struct LabelStatement;
-    struct ReturnStatement;
-    struct StoreStatement;
-    struct ConditionedBranchStatement;
-    struct BranchStatement;
-    typedef std::shared_ptr<Statement> StatementPtr;
-
-    struct Expression;
-    struct SymbolExpression;
-    struct RegisterExpression;
-    struct ConstExpression;
-    struct LoadExpression;
-    struct CallExpression;
-    struct AllocaExpression;
-    typedef std::shared_ptr<Expression> ExpressionPtr;
+    typedef std::shared_ptr<Block> BlockPtr;
+    typedef std::shared_ptr<FunctionSymbol> FunctionSymbolPtr;
+    typedef std::shared_ptr<Instruction> InstructionPtr;
 }

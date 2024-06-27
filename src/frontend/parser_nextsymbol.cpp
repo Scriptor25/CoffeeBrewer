@@ -1,4 +1,5 @@
 #include <map>
+#include <cb/frontend/Instruction.hpp>
 #include <cb/frontend/Parser.hpp>
 #include <cb/frontend/Symbol.hpp>
 
@@ -30,7 +31,7 @@ cb::frontend::SymbolPtr cb::frontend::Parser::NextSymbol()
 
 cb::frontend::SymbolPtr cb::frontend::Parser::NextVariableSymbol(const Location& where, const TypePtr& type, const std::map<std::string, std::string>& mods, const std::string& name)
 {
-    const auto value = NextExpression();
+    const auto value = NextExpression("");
     return std::make_shared<VariableSymbol>(where, type, mods, name, value);
 }
 
@@ -46,11 +47,17 @@ cb::frontend::SymbolPtr cb::frontend::Parser::NextFunctionSymbol(const Location&
     }
     Expect(TokenType_ParenClose);
 
-    std::vector<StatementPtr> body;
+    auto symbol = std::make_shared<FunctionSymbol>(where, type, mods, name, args);
+
     Expect(TokenType_BraceOpen);
     while (!AtEOF() && !At(TokenType_BraceClose))
-        body.push_back(NextStatement());
+    {
+        const auto inst = NextStatement(symbol);
+        if (const auto p = std::dynamic_pointer_cast<LabelInstruction>(inst))
+            symbol->ActiveBlock = symbol->GetBlock(p->Name);
+        else inst->InsertInto(symbol);
+    }
     Expect(TokenType_BraceClose);
 
-    return std::make_shared<FunctionSymbol>(where, type, mods, name, args, body);
+    return symbol;
 }
