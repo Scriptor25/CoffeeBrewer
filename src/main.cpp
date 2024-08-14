@@ -16,7 +16,7 @@ int consumer(const cb::frontend::SymbolPtr& symbol)
 
 int main()
 {
-    const std::filesystem::path filename("../examples/hello.cb");
+    const std::filesystem::path filename("../examples/fib.cb");
 
     std::ifstream stream(filename);
     if (!stream)
